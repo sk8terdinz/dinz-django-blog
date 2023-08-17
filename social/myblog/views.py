@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Profile, MyUpdate
 from .forms import UpdateForm, SignUpForm, ProfilePicForm
@@ -116,4 +116,16 @@ def update_user(request):
     else:
         messages.success(request, ("You Must Be Logged In to View That Page!"))
         return redirect('home')
+
+def update_like(request, pk):
+    if request.user.is_authenticated:
+        weep = get_object_or_404(MyUpdate, id=pk)
+        if weep.likes.filter(id=request.user.id):
+            weep.likes.remove(request.user)
+        else:
+            weep.likes.add(request.user)
+        return redirect(request.META.get("HTTP_REFERER"))
     
+    else:
+        messages.success(request, ("You Must Be Logged In to View That Page!"))
+        return redirect('home')

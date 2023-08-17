@@ -25,7 +25,7 @@ class UpdateForm(forms.ModelForm):
     
     class Meta:
         model = MyUpdate
-        exclude = ("user",)
+        exclude = ("user", "likes",) 
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(label="", widget=forms.TextInput(attrs={

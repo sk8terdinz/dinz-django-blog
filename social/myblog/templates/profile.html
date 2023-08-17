@@ -12,7 +12,14 @@
                         <div class="alert alert-dark" role="alert">
                             {{ weep.body }}<br/>
                             <small class="text-muted">
-                                {{ weep.created_at }} By <a href="{% url 'profile' weep.user.id %}">@{{ weep.user.username }}</a>
+                                {{ weep.created_at }} By <a href="{% url 'profile' weep.user.id %}">
+                                @{{ weep.user.username }}</a>
+                                - {{ weep.number_of_likes }} Likes -
+                                {% if user in weep.likes.all %}
+                                    <a href="{% url 'update_like' weep.id %}">UnLike</a>
+                                {% else %}
+                                    <a href="{% url 'update_like' weep.id %}">Like</a>
+                                {% endif %}
                             </small>
                         </div><br/><br/>
                     {% endfor %}
@@ -21,9 +28,7 @@
             <div class="col-4">
                 <br/><br/><br/>
                 {% if profile.profile_image %}
-                
                     <img src="{{ profile.profile_image.url }}" class="rounded-circle" width="150" height="150">
-                    
                 {% endif %}
                 <br/><br/>
                 <div class="card">

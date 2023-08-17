@@ -10,11 +10,21 @@
 <br/>
     {% for weep in weeps %}
             <div class="alert alert-dark" role="alert">
-                {{ weep.body }}<br/>
-                <small class="text-muted">
-                    {{ weep.created_at }} By <a href="{% url 'profile' weep.user.id %}">@{{ weep.user.username }}</a>
-                </small>
-            </div><br/><br/>
+                <div class="col-11">
+                    {{ weep.body }}<br/>
+                        <small class="text-muted">
+                            {{ weep.created_at }} By <a href="{% url 'profile' weep.user.id %}">
+                            @{{ weep.user.username }}</a>
+                            - {{ weep.number_of_likes }} Likes - 
+                            {% if user in weep.likes.all %}
+                                <a href="{% url 'update_like' weep.id %}">UnLike</a>
+                            {% else %}
+                            <a href="{% url 'update_like' weep.id %}">Like</a>
+                            {% endif %}
+                        </small>
+                </div>
+            </div>
+            <br/><br/>
     {% endfor %}
         </div>
  
