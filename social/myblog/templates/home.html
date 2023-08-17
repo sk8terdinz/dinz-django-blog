@@ -17,9 +17,13 @@
                             @{{ weep.user.username }}</a>
                             - {{ weep.number_of_likes }} Likes - 
                             {% if user in weep.likes.all %}
-                                <a href="{% url 'update_like' weep.id %}">UnLike</a>
+                                <a href="{% url 'update_like' weep.id %}">
+                                    <i class="fa-solid fa-heart" style="color:red"></i>
+                                </a>
                             {% else %}
-                            <a href="{% url 'update_like' weep.id %}">Like</a>
+                            <a href="{% url 'update_like' weep.id %}">
+                                <i class="fa fa-heart-o" style="color:red"></i>
+                            </a>
                             {% endif %}
                         </small>
                 </div>
