@@ -15,7 +15,7 @@
                             <small class="text-muted">
                                 {{ weep.created_at }} By <a href="{% url 'profile' weep.user.id %}">
                                 @{{ weep.user.username }}</a>
-                                - {{ weep.number_of_likes }} Likes -
+                                &nbsp;{{ weep.number_of_likes }}
                                 {% if user in weep.likes.all %}
                                     <a href="{% url 'update_like' weep.id %}">
                                         <i class="fa-solid fa-heart" style="color:red"></i>
@@ -51,8 +51,10 @@
                       <p class="card-text">
                         {% for following in profile.follows.all %}
                             <a href="{% url 'profile' following.user.id %}">
-                            @{{ following }}</a>
-                            <br/>
+                            @{{ following }}</a>&nbsp;
+                            <a href="{% url 'unfollow' following.user.id %}">
+                                <i class="fa fa-user-minus small" style="color:gray"></i>
+                            </a><br/>
                         {% endfor %}
                       </p>
                     </div>
@@ -66,7 +68,16 @@
                         <p class="card-text">
                           {% for following in profile.followed_by.all %}
                                 <a href="{% url 'profile' following.user.id %}">
-                                @{{ following }}</a>
+                                @{{ following }}</a>&nbsp;
+                                {% if following in profile.follows.all %}
+                                    <a href="{% url 'unfollow' following.user.id %}">
+                                        <i class="fa fa-user-minus small" style="color:gray"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'follow' following.user.id %}">
+                                        <i class="fa fa-user-plus small" style="color:gray"></i>
+                                    </a>
+                                {% endif %}
                                 <br/>
                           {% endfor %}
                         </p>

@@ -15,7 +15,7 @@
                         <small class="text-muted">
                             {{ weep.created_at }} By <a href="{% url 'profile' weep.user.id %}">
                             @{{ weep.user.username }}</a>
-                            - {{ weep.number_of_likes }} Likes - 
+                            &nbsp;{{ weep.number_of_likes }} 
                             {% if user in weep.likes.all %}
                                 <a href="{% url 'update_like' weep.id %}">
                                     <i class="fa-solid fa-heart" style="color:red"></i>
