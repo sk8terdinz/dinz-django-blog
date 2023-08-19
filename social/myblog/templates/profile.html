@@ -49,13 +49,20 @@
                     <h5 class="card-header">Follows</h5>
                     <div class="card-body">
                       <p class="card-text">
-                        {% for following in profile.follows.all %}
-                            <a href="{% url 'profile' following.user.id %}">
-                            @{{ following }}</a>&nbsp;
-                            <a href="{% url 'unfollow' following.user.id %}">
-                                <i class="fa fa-user-minus small" style="color:gray"></i>
-                            </a><br/>
-                        {% endfor %}
+                        {% if user.is_authenticated and user.id == profile.user.id %}
+                            {% for following in profile.follows.all %}
+                                <a href="{% url 'profile' following.user.id %}">
+                                @{{ following }}</a>&nbsp;
+                                <a href="{% url 'unfollow' following.user.id %}">
+                                    <i class="fa fa-user-minus small" style="color:gray"></i>
+                                </a><br/>
+                            {% endfor %}
+                        {% else %}
+                            {% for following in profile.follows.all %}
+                                <a href="{% url 'profile' following.user.id %}">
+                                @{{ following }}</a><br/>
+                            {% endfor %}
+                        {% endif %}
                       </p>
                     </div>
                 </div>
@@ -66,20 +73,28 @@
                     <h5 class="card-header">Followed By</h5>
                     <div class="card-body">
                         <p class="card-text">
-                          {% for following in profile.followed_by.all %}
-                                <a href="{% url 'profile' following.user.id %}">
-                                @{{ following }}</a>&nbsp;
-                                {% if following in profile.follows.all %}
-                                    <a href="{% url 'unfollow' following.user.id %}">
-                                        <i class="fa fa-user-minus small" style="color:gray"></i>
-                                    </a>
-                                {% else %}
-                                    <a href="{% url 'follow' following.user.id %}">
-                                        <i class="fa fa-user-plus small" style="color:gray"></i>
-                                    </a>
-                                {% endif %}
-                                <br/>
-                          {% endfor %}
+                        {% if user.is_authenticated and user.id == profile.user.id %}
+                            {% for following in profile.followed_by.all %}
+                                    <a href="{% url 'profile' following.user.id %}">
+                                    @{{ following }}</a>&nbsp;
+                                    {% if following in profile.follows.all %}
+                                        <a href="{% url 'unfollow' following.user.id %}">
+                                            <i class="fa fa-user-minus small" style="color:gray"></i>
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'follow' following.user.id %}">
+                                            <i class="fa fa-user-plus small" style="color:gray"></i>
+                                        </a>
+                                    {% endif %}
+                                    <br/>
+                            {% endfor %}
+                        {% else %}
+                            {% for following in profile.followed_by.all %}
+                                    <a href="{% url 'profile' following.user.id %}">
+                                    @{{ following }}</a>
+                                    <br/>
+                            {% endfor %}
+                        {% endif %}
                         </p>
                     </div>
                 </div>
