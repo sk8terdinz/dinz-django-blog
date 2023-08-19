@@ -17,15 +17,10 @@
                             @{{ weep.user.username }}</a>
                             &nbsp;{{ weep.number_of_likes }} 
                             {% if user in weep.likes.all %}
-                                <a href="{% url 'update_like' weep.id %}">
-                                    <i class="fa-solid fa-heart" style="color:red"></i>
-                                </a>
+                                <a href="{% url 'update_like' weep.id %}"><i class="fa-solid fa-heart" style="color:red"></i></a>
                             {% else %}
-                            <a href="{% url 'update_like' weep.id %}">
-                                <i class="fa fa-heart-o" style="color:red"></i>
-                            </a>
+                            <a href="{% url 'update_like' weep.id %}"><i class="fa fa-heart-o" style="color:red"></i></a>
                             {% endif %}
-
                             {% if user.is_authenticated and weep.user.id == user.id %}
                                 &nbsp;&nbsp;
                                 <a href="{% url 'delete_update' weep.id %}"><i class="fas fa-trash-alt" style="color:gray"></i></a>&nbsp;&nbsp;&nbsp;
