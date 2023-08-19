@@ -25,6 +25,12 @@
                                 <i class="fa fa-heart-o" style="color:red"></i>
                             </a>
                             {% endif %}
+
+                            {% if user.is_authenticated and weep.user.id == user.id %}
+                                &nbsp;&nbsp;
+                                <a href="{% url 'delete_update' weep.id %}"><i class="fas fa-trash-alt" style="color:gray"></i></a>&nbsp;&nbsp;&nbsp;
+                                <a href="{% url 'edit_update' weep.id %}"><i class="fa fa-edit" style="color:gray"></i></a>
+                            {% endif %}
                         </small>
                 </div>
             </div>

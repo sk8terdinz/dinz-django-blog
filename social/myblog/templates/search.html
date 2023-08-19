@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>Search Update!</h1>
+<br/>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="input" class="form-control" placeholder="Search Updates" name="search">
+    <br/><br/>
+    <button type="submit" class="btn btn-secondary">Search Update!</button>
+</form>
+<br/><br/>
+
+{% if search %}
+<h3>You Searched For: {{ search }}</h3><br/>
+
+{% for weep in searched %}
+
+<div class="alert alert-dark" role="alert">
+    <div class="container">
+        <div class="row">
+            <div class="col-1">
+                {% if weep.user.profile.profile_image %}
+                    <img src="{{ weep.user.profile.profile_image.url }}" width=50 height=50 class="rounded-circle" alt="{{ profile.user.username }}">
+
+                {% else %}
+                    <img src="{% static 'images/xEoLhJy5_400x400.jpg' %}" width=50 height=50 class="rounded-circle" alt="{{ profile.user.username }}">	
+                {% endif %}
+            </div>
+
+            <div class="col-11">
+              {{ weep.body }}<br/>
+              <small class="text-muted">
+              {{ weep.created_at}} By 
+              <a href="{% url 'profile' weep.user.id %}">
+            @{{ weep.user.username }}</a>
+              &nbsp;{{ weep.number_of_likes }}&nbsp; 
+
+              {% if user in weep.likes.all %}
+                
+                <i class="fa-solid fa-heart" style="color:red"></i>
+              {% else %}
+              
+                  <i class="fa fa-heart-o" style="color:red"></i>
+              {% endif %}
+
+              </small>
+            </div><br/><br/>
+
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+{% endif %}
+
+{% endblock %}

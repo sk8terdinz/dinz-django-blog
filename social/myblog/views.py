@@ -91,7 +91,31 @@ def profile(request, pk):
     else:
         messages.success(request, ("You Must Be Logged In To View This Page..."))
         return redirect('home')
-    
+
+def followers(request, pk):
+    if request.user.is_authenticated:
+        if request.user.id == pk:
+            profiles = Profile.objects.get(user_id=pk)
+            return render(request, 'followers.html', {"profiles":profiles})
+        else:
+            messages.success(request, ("That's Not Your Profile Page..."))
+            return redirect('home')
+    else:
+        messages.success(request, ("You Must Be Logged In To View This Page..."))
+        return redirect('home')
+
+def follows(request, pk):
+    if request.user.is_authenticated:
+        if request.user.id == pk:
+            profiles = Profile.objects.get(user_id=pk)
+            return render(request, 'follows.html', {"profiles":profiles})
+        else:
+            messages.success(request, ("That's Not Your Profile Page..."))
+            return redirect('home')
+    else:
+        messages.success(request, ("You Must Be Logged In To View This Page..."))
+        return redirect('home')
+
 def login_user(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -163,3 +187,56 @@ def update_like(request, pk):
     else:
         messages.success(request, ("You Must Be Logged In to View That Page!"))
         return redirect('home')
+
+def delete_update(request, pk):
+    if request.user.is_authenticated:
+        weep = get_object_or_404(MyUpdate, id=pk)
+        # Check to see if you own the update
+        if request.user.username == weep.user.username:
+            # Delete The Update
+            weep.delete()
+
+            messages.success(request, ("The Update Has Been Deleted!"))
+            return redirect(request.META.get("HTTP_REFERER"))
+        else:
+            messages.success(request, ("You Don't Own That Update!!"))
+            return redirect('home')
+    else:
+        messages.success(request, ("Please Log In To Continue..."))
+        return redirect(request.META.get("HTTP_REFERER"))
+    
+def edit_update(request, pk):
+    if request.user.is_authenticated:
+        # Grab The Update!
+        weep = get_object_or_404(MyUpdate, id=pk)
+        
+        # Check to see if you own the update
+        if request.user.username == weep.user.username:
+            
+            form = UpdateForm(request.POST or None, instance=weep)
+            if request.method == "POST":
+                if form.is_valid():
+                    weep = form.save(commit=False)
+                    weep.user = request.user
+                    weep.save()
+                    messages.success(request, ("Your Update Has Been Updated!"))
+                    return redirect('home')
+            else:
+                return render(request, 'edit_update.html', {'form':form, 'weep':weep})
+
+        else:
+            messages.success(request, ("You Don't Own That Update!!"))
+            return redirect('home')
+    else:
+        messages.success(request, ("Please Log In To Continue..."))
+        return redirect('home')
+
+def search(request):
+    if request.method == "POST":
+        # Grab the form field input
+        search = request.POST['search']
+        # Search the database
+        searched = MyUpdate.objects.filter(body__contains = search)
+        return render(request, 'search.html', {'search':search, 'searched':searched})
+    else:
+        return render(request, 'search.html', {})
